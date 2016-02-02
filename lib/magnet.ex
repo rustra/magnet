@@ -7,7 +7,8 @@ defmodule Magnet do
     source: [],
     keywords: [],
     manifest: nil,
-    announce: []
+    announce: [],
+    experimental: %{}
   )
 
   defdelegate decode(data), to: Magnet.Decoder
@@ -59,6 +60,9 @@ defimpl Collectable, for: Magnet do
       acc, {:cont, {<<"xt", priority::binary>>, value}} ->
         entry = parse_suffix_number(priority, value)
         %Magnet{acc|info_hash: [entry|acc.info_hash]}
+
+      acc, {:cont, {<<"x.", key::binary>>, value}} ->
+        %Magnet{acc|experimental: Map.put(acc.experimental, key, value)}
 
       acc, :done ->
         keywords =

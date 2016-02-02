@@ -106,4 +106,13 @@ defmodule MagnetTest do
                               "udp://tracker.example1.com:1337"]
                   } = Magnet.decode(magnet) |> Enum.into(%Magnet{})
   end
+
+  test "should support experimental keys" do
+    magnet = ~w(
+      magnet:?
+      x.my_experiment=very_experimental
+    ) |> Enum.join
+
+    assert %Magnet{experimental: %{"my_experiment" => "very_experimental"}} = Magnet.decode(magnet) |> Enum.into(%Magnet{})
+  end
 end

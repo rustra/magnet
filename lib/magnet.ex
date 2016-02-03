@@ -12,6 +12,7 @@ defmodule Magnet do
   )
 
   defdelegate decode(data), to: Magnet.Decoder
+  defdelegate encode(data), to: Magnet.Encoder
 end
 
 defimpl Collectable, for: Magnet do

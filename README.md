@@ -1,7 +1,7 @@
 Magnet
 ======
 
-Parse Magnet URIs in Elixir.
+Parse and encode Magnet URIs in Elixir.
 
 Usage
 -----

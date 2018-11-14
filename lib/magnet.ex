@@ -29,7 +29,8 @@ defimpl Collectable, for: Magnet do
 
       # dn (Display Name) - Suggested filename
       acc, {:cont, {"dn", value}} ->
-        %Magnet{acc|name: value}
+        name = URI.decode value
+        %Magnet{acc|name: name}
 
       # kt (Keyword Topic) - Key words for the given torrent
       acc, {:cont, {<<"kt", priority::binary>>, value}} ->

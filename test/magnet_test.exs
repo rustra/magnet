@@ -115,4 +115,11 @@ defmodule MagnetTest do
 
     assert %Magnet{experimental: %{"my_experiment" => "very_experimental"}} = Magnet.decode(magnet) |> Enum.into(%Magnet{})
   end
+
+  test "the name should be decoded" do
+    magnet = "magnet:?dn=Name%20%28with%20special%20characters%29"
+
+    assert %Magnet{name: "Name (with special characters)"} =
+      Magnet.decode(magnet) |> Enum.into(%Magnet{})
+  end
 end

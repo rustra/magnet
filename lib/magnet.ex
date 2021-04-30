@@ -1,15 +1,19 @@
 defmodule Magnet do
-  defstruct(
-    name: nil,
-    length: nil,
-    info_hash: [],
-    fallback: nil,
-    source: [],
-    keywords: [],
-    manifest: nil,
-    announce: [],
-    experimental: %{}
-  )
+  @moduledoc """
+  `Magnet` struct which represents Magnet URI.
+
+  See: https://en.wikipedia.org/wiki/Magnet_URI_scheme
+  """
+
+  defstruct name: nil,
+            length: nil,
+            info_hash: [],
+            fallback: nil,
+            source: [],
+            keywords: [],
+            manifest: nil,
+            announce: [],
+            experimental: %{}
 
   defdelegate decode(data), to: Magnet.Decoder
   defdelegate encode(data), to: Magnet.Encoder

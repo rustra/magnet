@@ -1,4 +1,8 @@
 defmodule Magnet.Decoder do
+  @moduledoc """
+  Decodes a Magnet URI to a `Magnet` struct.
+  """
+
   def decode("magnet:?" <> magnet) do
     do_decode(magnet, [])
   end

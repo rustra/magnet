@@ -1,4 +1,8 @@
 defmodule Magnet.Encoder do
+  @moduledoc """
+  Encodes a `Magnet` struct to a Magnet URI.
+  """
+
   def encode(%Magnet{} = magnet) do
     data =
       magnet
@@ -49,12 +53,14 @@ defmodule Magnet.Encoder do
     do: into_group(acc, :xs, values)
 
   defp do_encode({:experimental, value}, acc) do
-    unless Enum.empty?(value) do
-      Enum.reduce(value, acc, fn {key, value} ->
-        Map.put(acc, "x.#{key}", value)
-      end)
-    else
-      acc
+    case Enum.empty?(value) do
+      false ->
+        Enum.reduce(value, acc, fn {key, value} ->
+          Map.put(acc, "x.#{key}", value)
+        end)
+
+      true ->
+        acc
     end
   end
 

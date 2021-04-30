@@ -2,8 +2,8 @@ defmodule Magnet.Encoder do
   def encode(%Magnet{} = magnet) do
     data =
       magnet
-      |> Map.from_struct
-      |> Map.to_list
+      |> Map.from_struct()
+      |> Map.to_list()
       |> Enum.reduce(%{}, &do_encode/2)
 
     "magnet:?#{URI.encode_query(data)}"
@@ -20,6 +20,7 @@ defmodule Magnet.Encoder do
 
   defp do_encode({:announce, [value]}, acc),
     do: Map.put(acc, :tr, value)
+
   defp do_encode({:announce, values}, acc),
     do: into_group(acc, :tr, values)
 
@@ -28,11 +29,13 @@ defmodule Magnet.Encoder do
 
   defp do_encode({:info_hash, [value]}, acc),
     do: Map.put(acc, :xt, value)
+
   defp do_encode({:info_hash, values}, acc),
     do: into_group(acc, :xt, values)
 
   defp do_encode({:keywords, [value]}, acc),
     do: Map.put(acc, :kt, value)
+
   defp do_encode({:keywords, values}, acc),
     do: into_group(acc, :kt, values)
 
@@ -41,11 +44,12 @@ defmodule Magnet.Encoder do
 
   defp do_encode({:source, [value]}, acc),
     do: Map.put(acc, :xs, value)
+
   defp do_encode({:source, values}, acc),
     do: into_group(acc, :xs, values)
 
   defp do_encode({:experimental, value}, acc) do
-    unless Enum.empty? value do
+    unless Enum.empty?(value) do
       Enum.reduce(value, acc, fn {key, value} ->
         Map.put(acc, "x.#{key}", value)
       end)
@@ -59,7 +63,7 @@ defmodule Magnet.Encoder do
     values
     |> Enum.with_index(1)
     |> Enum.reduce(acc, fn {value, index}, acc ->
-         Map.put(acc, "#{key}.#{index}", value)
-       end)
+      Map.put(acc, "#{key}.#{index}", value)
+    end)
   end
 end

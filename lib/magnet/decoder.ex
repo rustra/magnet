@@ -3,37 +3,39 @@ defmodule Magnet.Decoder do
   Decodes a Magnet URI to a `Magnet` struct.
   """
 
+  @spec decode(String.t()) :: Magnet.t()
   def decode("magnet:?" <> magnet) do
-    do_decode(magnet, [])
+    magnet
+    |> do_decode([])
+    |> Enum.into(%Magnet{})
   end
 
+  @spec do_decode(String.t(), [{String.t(), String.t()}]) :: [{String.t(), String.t()}]
   defp do_decode("", acc), do: acc
 
   defp do_decode(rest, acc) do
-    with(
-      {key, rest} <- do_decode_key(rest, []),
-      {value, rest} <- do_decode_value(rest, []),
-      do: do_decode(rest, [{key, value} | acc])
-    )
+    with {key, rest} <- do_decode_key(rest, []),
+         {value, rest} <- do_decode_value(rest, []) do
+      do_decode(rest, [{key, value} | acc])
+    end
   end
 
+  @spec do_decode_key(binary, charlist) :: {String.t(), String.t()}
   defp do_decode_key(<<"=", rest::binary>>, acc) do
-    result = convert_list_to_string(acc)
-    {result, rest}
+    with result <- convert_list_to_string(acc), do: {result, rest}
   end
 
   defp do_decode_key(<<char, rest::binary>>, acc) do
     do_decode_key(rest, [char | acc])
   end
 
+  @spec do_decode_value(binary, charlist) :: {String.t(), String.t()}
   defp do_decode_value("", acc) do
-    result = convert_list_to_string(acc)
-    {result, ""}
+    with result <- convert_list_to_string(acc), do: {result, ""}
   end
 
   defp do_decode_value(<<"&", rest::binary>>, acc) do
-    result = convert_list_to_string(acc)
-    {result, rest}
+    with result <- convert_list_to_string(acc), do: {result, rest}
   end
 
   defp do_decode_value(<<char, rest::binary>>, acc) do
@@ -41,6 +43,7 @@ defmodule Magnet.Decoder do
   end
 
   # turn char lists created by accumulating strings into utf8 strings
+  @spec convert_list_to_string(charlist) :: String.t()
   defp convert_list_to_string(list) do
     list
     |> Enum.reverse()

@@ -17,8 +17,8 @@ defmodule Magnet.EncoderTest do
          &xs=dchub://example.org
       ) |> Enum.join()
 
-    data = magnet |> Magnet.decode() |> Enum.into(%Magnet{})
+    data = magnet |> Magnet.decode()
 
-    assert data == data |> Encoder.encode() |> Magnet.decode() |> Enum.into(%Magnet{})
+    assert data == data |> Encoder.encode() |> Magnet.decode()
   end
 end

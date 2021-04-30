@@ -3,7 +3,7 @@ defmodule MagnetTest do
   doctest Magnet
 
   test "decode an empty magnet uri" do
-    assert %Magnet{} = Magnet.decode("magnet:?") |> Enum.into(%Magnet{})
+    assert %Magnet{} = Magnet.decode("magnet:?")
   end
 
   test "decode a valid magnet uri" do
@@ -33,7 +33,7 @@ defmodule MagnetTest do
                "http://cache.example.org/XRX2PEFXOOEJFRVUCX6HMZMKS5TWG4K5",
                "dchub://example.org"
              ]
-           } = Magnet.decode(magnet) |> Enum.into(%Magnet{})
+           } = Magnet.decode(magnet)
   end
 
   test "zero length file" do
@@ -53,33 +53,35 @@ defmodule MagnetTest do
                "urn:bitprint:3I42H3S6NNF2QMSVX7XZKYAYSCX5QBYJ.LWPNAQCDBZRYXW3VJHVCJ64QBZNGHOHHHZWCLNQ",
                "urn:md5:D42D8CD98F00B2049E800989ECF8427E"
              ]
-           } = Magnet.decode(magnet) |> Enum.into(%Magnet{})
+           } = Magnet.decode(magnet)
   end
 
   test "empty values should not break the decoder" do
     magnet = "magnet:?xt=&as=&kt=&mt=&tr=&xl=&xs="
-    assert %Magnet{} = Magnet.decode(magnet) |> Enum.into(%Magnet{})
+
+    assert %Magnet{} = Magnet.decode(magnet)
   end
 
   test "extracting keywords" do
     magnet = "magnet:?kt=foo+bar+baz"
 
-    assert %Magnet{keywords: ["foo", "bar", "baz"]} =
-             Magnet.decode(magnet) |> Enum.into(%Magnet{})
+    assert %Magnet{keywords: ["foo", "bar", "baz"]} = Magnet.decode(magnet)
 
     magnet = "magnet:?kt=foo&kt=bar&kt=baz"
 
-    assert %Magnet{keywords: ["foo", "bar", "baz"]} =
-             Magnet.decode(magnet) |> Enum.into(%Magnet{})
+    assert %Magnet{keywords: ["foo", "bar", "baz"]} = Magnet.decode(magnet)
 
     magnet = "magnet:?kt=foo"
-    assert %Magnet{keywords: ["foo"]} = Magnet.decode(magnet) |> Enum.into(%Magnet{})
+
+    assert %Magnet{keywords: ["foo"]} = Magnet.decode(magnet)
 
     magnet = "magnet:?kt=foo+foo+foo"
-    assert %Magnet{keywords: ["foo"]} = Magnet.decode(magnet) |> Enum.into(%Magnet{})
+
+    assert %Magnet{keywords: ["foo"]} = Magnet.decode(magnet)
 
     magnet = "magnet:?kt.1=foo+foo+foo&kt.2=bar"
-    assert %Magnet{keywords: ["foo", "bar"]} = Magnet.decode(magnet) |> Enum.into(%Magnet{})
+
+    assert %Magnet{keywords: ["foo", "bar"]} = Magnet.decode(magnet)
   end
 
   test "decode entries with dot-number suffixes" do
@@ -94,7 +96,7 @@ defmodule MagnetTest do
                "urn:sha1:YNCKHTQCBWTRJNIV4WNAE52SJUQCZ5OC",
                "urn:sha1:TXGCZTQH2N6L6OUQAJJPFLAHG2LTGBC7"
              ]
-           } = Magnet.decode(magnet_url) |> Enum.into(%Magnet{})
+           } = Magnet.decode(magnet_url)
   end
 
   test "announce lists should get dedubbed" do
@@ -117,7 +119,7 @@ defmodule MagnetTest do
                "udp://tracker.example2.com:80",
                "udp://tracker.example1.com:1337"
              ]
-           } = Magnet.decode(magnet) |> Enum.into(%Magnet{})
+           } = Magnet.decode(magnet)
   end
 
   test "should support experimental keys" do
@@ -127,6 +129,6 @@ defmodule MagnetTest do
     ) |> Enum.join()
 
     assert %Magnet{experimental: %{"my_experiment" => "very_experimental"}} =
-             Magnet.decode(magnet) |> Enum.into(%Magnet{})
+             Magnet.decode(magnet)
   end
 end

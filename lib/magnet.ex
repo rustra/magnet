@@ -15,11 +15,26 @@ defmodule Magnet do
             announce: [],
             experimental: %{}
 
+  @type t :: %__MODULE__{
+          name: String.t(),
+          length: number,
+          info_hash: [String.t()],
+          fallback: String.t(),
+          source: [String.t()],
+          keywords: [String.t()],
+          manifest: String.t(),
+          announce: [String.t()],
+          experimental: map
+        }
+
   defdelegate decode(data), to: Magnet.Decoder
   defdelegate encode(data), to: Magnet.Encoder
 end
 
 defimpl Collectable, for: Magnet do
+  @spec into(Magnet.t()) ::
+          {Magnet.t(),
+           (Magnet.t(), {:cont, {String.t(), String.t()}} | :done | :halt -> Magnet.t() | :ok)}
   def into(original) do
     {original,
      fn
@@ -90,23 +105,25 @@ defimpl Collectable, for: Magnet do
      end}
   end
 
+  @spec prepare_list([{number, String.t()}]) :: [String.t()]
   defp prepare_list(list) do
     list
     |> sort_by_priority
     |> Enum.dedup()
   end
 
+  @spec sort_by_priority([{number, String.t()}]) :: [String.t()]
   defp sort_by_priority(priority_list) do
     priority_list
     |> Enum.sort_by(&elem(&1, 0))
     |> Enum.map(&elem(&1, 1))
   end
 
+  @spec parse_suffix_number(String.t(), any) :: {number, any}
   defp parse_suffix_number("", value),
     do: {0, value}
 
   defp parse_suffix_number(<<".", number::binary>>, value) do
-    {num, _} = Integer.parse(number)
-    {num, value}
+    with {num, _} <- Integer.parse(number), do: {num, value}
   end
 end

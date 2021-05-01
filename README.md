@@ -7,10 +7,8 @@ Usage
 -----
 
 ``` elixir
-Magnet.decode(magnet_uri) |> Enum.into(%Magnet{})
+%Magnet{} = Magnet.decode(magnet_uri)
 ```
-
-If you only decode it you will get a list of key-value tuples.
 
 License
 -------

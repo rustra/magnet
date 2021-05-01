@@ -17,6 +17,8 @@ defmodule MagnetTest do
          &as=http%3A%2F%2Fdownload.wikimedia.org%2Fmediawiki%2F1.15%2Fmediawiki-1.15.1.tar.gz
          &xs=http%3A%2F%2Fcache.example.org%2FXRX2PEFXOOEJFRVUCX6HMZMKS5TWG4K5
          &xs=dchub://example.org
+         &x.exp1=http%3A%2F%2Fdownload.wikimedia.org%2Fmediawiki%2F1.15%2Fmediawiki-1.15.1.tar.gz
+         &x.exp2=http%3A%2F%2Fcache.example.org%2FXRX2PEFXOOEJFRVUCX6HMZMKS5TWG4K5
       ) |> Enum.join()
 
     assert %Magnet{
@@ -32,7 +34,11 @@ defmodule MagnetTest do
              source: [
                "http://cache.example.org/XRX2PEFXOOEJFRVUCX6HMZMKS5TWG4K5",
                "dchub://example.org"
-             ]
+             ],
+             experimental: %{
+               "exp1" => "http://download.wikimedia.org/mediawiki/1.15/mediawiki-1.15.1.tar.gz",
+               "exp2" => "http://cache.example.org/XRX2PEFXOOEJFRVUCX6HMZMKS5TWG4K5"
+             }
            } = Magnet.decode(magnet)
   end
 

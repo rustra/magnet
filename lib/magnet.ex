@@ -83,7 +83,8 @@ defimpl Collectable, for: Magnet do
          %Magnet{acc | info_hash: [entry | acc.info_hash]}
 
        acc, {:cont, {<<"x.", key::binary>>, value}} ->
-         %Magnet{acc | experimental: Map.put(acc.experimental, key, value)}
+         experimental = URI.decode(value)
+         %Magnet{acc | experimental: Map.put(acc.experimental, key, experimental)}
 
        acc, :done ->
          keywords =

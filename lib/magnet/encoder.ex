@@ -10,8 +10,18 @@ defmodule Magnet.Encoder do
       |> Map.from_struct()
       |> Map.to_list()
       |> Enum.reduce(%{}, &do_encode/2)
+      |> Enum.map_join("&", &encode_kv_pair/1)
 
-    "magnet:?#{URI.encode_query(data)}"
+    "magnet:?#{data}"
+  end
+
+  @spec encode_kv_pair({atom | String.t(), any}) :: String.t()
+  defp encode_kv_pair({k, v}) do
+    cond do
+      k in [:as, :xs, :tr] -> "#{k}=#{URI.encode(v)}"
+      is_binary(k) && String.starts_with?(k, "x.") -> "#{k}=#{URI.encode(v)}"
+      true -> "#{k}=#{v}"
+    end
   end
 
   @spec do_encode({atom, any}, map) :: map

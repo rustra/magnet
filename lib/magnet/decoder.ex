@@ -3,12 +3,17 @@ defmodule Magnet.Decoder do
   Decodes a Magnet URI to a `Magnet` struct.
   """
 
-  @spec decode(String.t()) :: Magnet.t()
+  @spec decode(String.t()) :: {:ok, Magnet.t()} | {:error, atom}
   def decode("magnet:?" <> magnet) do
-    magnet
-    |> do_decode([])
-    |> Enum.into(%Magnet{})
+    magnet =
+      magnet
+      |> do_decode([])
+      |> Enum.into(%Magnet{})
+
+    {:ok, magnet}
   end
+
+  def decode(_), do: {:error, :invalid}
 
   @spec do_decode(String.t(), [{String.t(), String.t()}]) :: [{String.t(), String.t()}]
   defp do_decode("", acc), do: acc

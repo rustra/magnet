@@ -3,7 +3,7 @@ defmodule Magnet.Encoder do
   Encodes a `Magnet` struct to a Magnet URI.
   """
 
-  @spec encode(Magnet.t()) :: String.t()
+  @spec encode(Magnet.t()) :: {:ok, String.t()}
   def encode(%Magnet{} = magnet) do
     data =
       magnet
@@ -12,7 +12,7 @@ defmodule Magnet.Encoder do
       |> Enum.reduce(%{}, &do_encode/2)
       |> Enum.map_join("&", &encode_kv_pair/1)
 
-    "magnet:?#{data}"
+    {:ok, "magnet:?#{data}"}
   end
 
   @spec encode_kv_pair({atom | String.t(), any}) :: String.t()

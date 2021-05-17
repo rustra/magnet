@@ -7,7 +7,7 @@ Usage
 -----
 
 ``` elixir
-%Magnet{} = Magnet.decode(magnet_uri)
+{:ok, %Magnet{}} = Magnet.decode(magnet_uri)
 ```
 
 License

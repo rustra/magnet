@@ -23,12 +23,12 @@ defmodule Magnet.Mixfile do
   def package do
     [
       files: ["lib", "mix.exs", "README*", "LICENSE"],
-      maintainers: ["Martin Gausby", "rustra"],
+      maintainers: ["rustra"],
       licenses: ["Apache 2.0"],
       links: %{
-        "GitHub" => "https://github.com/gausby/magnet",
-        "Issues" => "https://github.com/gausby/magnet/issues",
-        "Contributors" => "https://github.com/gausby/magnet/graphs/contributors"
+        "GitHub" => "https://github.com/rustra/magnet",
+        "Issues" => "https://github.com/rustra/magnet/issues",
+        "Contributors" => "https://github.com/rustra/magnet/graphs/contributors"
       }
     ]
   end
@@ -42,7 +42,8 @@ defmodule Magnet.Mixfile do
   defp deps do
     [
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0.0-rc.7", only: [:dev, :test], runtime: false}
+      {:dialyxir, "~> 1.0.0-rc.7", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.24", only: :dev, runtime: false}
     ]
   end
 end
